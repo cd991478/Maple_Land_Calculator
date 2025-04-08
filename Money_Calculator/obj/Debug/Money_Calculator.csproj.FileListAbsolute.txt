@@ -1,0 +1,30 @@
+C:\Users\KB\Desktop\Money_Calculator\bin\Debug\Money_Calculator.exe.config
+C:\Users\KB\Desktop\Money_Calculator\bin\Debug\Money_Calculator.exe
+C:\Users\KB\Desktop\Money_Calculator\bin\Debug\Money_Calculator.pdb
+C:\Users\KB\Desktop\Money_Calculator\obj\Debug\Money_Calculator.csproj.AssemblyReference.cache
+C:\Users\KB\Desktop\Money_Calculator\obj\Debug\Money_Calculator.main_form.resources
+C:\Users\KB\Desktop\Money_Calculator\obj\Debug\Money_Calculator.Properties.Resources.resources
+C:\Users\KB\Desktop\Money_Calculator\obj\Debug\Money_Calculator.csproj.GenerateResource.cache
+C:\Users\KB\Desktop\Money_Calculator\obj\Debug\Money_Calculator.csproj.CoreCompileInputs.cache
+C:\Users\KB\Desktop\Money_Calculator\obj\Debug\Money_Calculator.exe
+C:\Users\KB\Desktop\Money_Calculator\obj\Debug\Money_Calculator.pdb
+C:\Users\user\Desktop\C# 프로젝트 메이플랜드 계산기\Hospital_Manage_ERP\bin\Debug\Money_Calculator.exe.config
+C:\Users\user\Desktop\C# 프로젝트 메이플랜드 계산기\Hospital_Manage_ERP\bin\Debug\Money_Calculator.exe
+C:\Users\user\Desktop\C# 프로젝트 메이플랜드 계산기\Hospital_Manage_ERP\bin\Debug\Money_Calculator.pdb
+C:\Users\user\Desktop\C# 프로젝트 메이플랜드 계산기\Hospital_Manage_ERP\obj\Debug\Money_Calculator.csproj.AssemblyReference.cache
+C:\Users\user\Desktop\C# 프로젝트 메이플랜드 계산기\Hospital_Manage_ERP\obj\Debug\Money_Calculator.main_form.resources
+C:\Users\user\Desktop\C# 프로젝트 메이플랜드 계산기\Hospital_Manage_ERP\obj\Debug\Money_Calculator.Properties.Resources.resources
+C:\Users\user\Desktop\C# 프로젝트 메이플랜드 계산기\Hospital_Manage_ERP\obj\Debug\Money_Calculator.csproj.GenerateResource.cache
+C:\Users\user\Desktop\C# 프로젝트 메이플랜드 계산기\Hospital_Manage_ERP\obj\Debug\Money_Calculator.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\C# 프로젝트 메이플랜드 계산기\Hospital_Manage_ERP\obj\Debug\Money_Calculator.exe
+C:\Users\user\Desktop\C# 프로젝트 메이플랜드 계산기\Hospital_Manage_ERP\obj\Debug\Money_Calculator.pdb
+C:\Users\user\Desktop\C# 프로젝트 메이플랜드 계산기\Money_Calculator\bin\Debug\Money_Calculator.exe.config
+C:\Users\user\Desktop\C# 프로젝트 메이플랜드 계산기\Money_Calculator\bin\Debug\Money_Calculator.exe
+C:\Users\user\Desktop\C# 프로젝트 메이플랜드 계산기\Money_Calculator\bin\Debug\Money_Calculator.pdb
+C:\Users\user\Desktop\C# 프로젝트 메이플랜드 계산기\Money_Calculator\obj\Debug\Money_Calculator.csproj.AssemblyReference.cache
+C:\Users\user\Desktop\C# 프로젝트 메이플랜드 계산기\Money_Calculator\obj\Debug\Money_Calculator.main_form.resources
+C:\Users\user\Desktop\C# 프로젝트 메이플랜드 계산기\Money_Calculator\obj\Debug\Money_Calculator.Properties.Resources.resources
+C:\Users\user\Desktop\C# 프로젝트 메이플랜드 계산기\Money_Calculator\obj\Debug\Money_Calculator.csproj.GenerateResource.cache
+C:\Users\user\Desktop\C# 프로젝트 메이플랜드 계산기\Money_Calculator\obj\Debug\Money_Calculator.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\C# 프로젝트 메이플랜드 계산기\Money_Calculator\obj\Debug\Money_Calculator.exe
+C:\Users\user\Desktop\C# 프로젝트 메이플랜드 계산기\Money_Calculator\obj\Debug\Money_Calculator.pdb
