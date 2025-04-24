@@ -13,30 +13,32 @@ namespace Money_Calculator
     public partial class main_form : Form
     {
         
-
         public main_form()
         {
             InitializeComponent();
         }
 
-        public class Exchange
-        {
-            public int money_first { get; set; }
-            public int money_second { get; set; }
-            public int mania_ratio { get; set; }
-            public int bank_ratio { get; set; }
+        public string mania_default = "4500"; // 초기값
+        public string bank_default = "4000";
 
+        public class Exchange   // 메소 판매
+        {
+            public int money_first { get; set; }    // 억단위
+            public int money_second { get; set; }   // 만단위
+            public int mania_ratio { get; set; }    // 아이템매니아 시세
+            public int bank_ratio { get; set; }     // 무통장거래 시세
+
+            // 아이템매니아 사이트 실제 수수료 방식 적용
             public static int mania_high_commission_limit = 940000; // 최대 수수료 상한선
             public static int mania_high_commission = 47000;        // 최대 수수료 금액
             public static int mania_low_commission_limit = 20000;   // 최저 수수료 하한선
             public static int mania_low_commission = 1000;          // 최저 수수료 금액
-
-            public static int mania_commission_percentage = 5;      // 통상 수수료 %
-            public static int mania_cash_out_commission = 1000;     // 출금수수료 고정 1000원
-            public long money_total { get; set; }
-            public long mania_commission { get; set; }
-            public long mania_result { get; set; }
-            public long bank_result { get; set; }
+            public static int mania_commission_percentage = 5;      // 통상 수수료 5%
+            public static int mania_cash_out_commission = 1000;     // 출금 수수료 고정 1000원
+            public long money_total { get; set; }       // 억, 만 단위 입력 변환 하여 저장할 실제 보유 금액
+            public long mania_commission { get; set; }  // 아이템매니아 수수료
+            public long mania_result { get; set; }      // 아이템매니아 판매시 순이익
+            public long bank_result { get; set; }       // 무통장거래 판매시 순이익
             public Exchange()
             {
                 this.money_first = 0;
@@ -48,65 +50,65 @@ namespace Money_Calculator
                 this.mania_result = 0;
                 this.bank_result = 0;
             }
-            public void Calc(string mf, string ms, string mr, string br)
+            public void Calc(string moneyfirst, string moneysecond, string maniaratio, string bankratio)
             {
                 try
                 {
-                    if (int.TryParse(mf, out int int_mf) &&
-                        int.TryParse(ms, out int int_ms) &&
-                        int.TryParse(mr, out int int_mr) &&
-                        int.TryParse(br, out int int_br))
+                    if (int.TryParse(moneyfirst, out int int_moneyfirst) &&
+                        int.TryParse(moneysecond, out int int_moneysecond) &&
+                        int.TryParse(maniaratio, out int int_maniaratio) &&
+                        int.TryParse(bankratio, out int int_bankratio))
                     {
-                        this.money_first = int_mf;
-                        this.money_second = int_ms;
-                        this.mania_ratio = int_mr;
-                        this.bank_ratio = int_br;
-                        this.money_total = (long)(this.money_first * 10000 + this.money_second) / 100;
+                        this.money_first = int_moneyfirst;
+                        this.money_second = int_moneysecond;
+                        this.mania_ratio = int_maniaratio;
+                        this.bank_ratio = int_bankratio;
+                        this.money_total = (long)(this.money_first * 10000 + this.money_second) / 100; // 억, 만 단위로 입력받은 값을 계산하여 변환
 
-                        this.mania_result = (long)(money_total * this.mania_ratio);
+                        this.mania_result = (long)(money_total * this.mania_ratio); // 1차 계산
                         this.bank_result = (long)(money_total * this.bank_ratio);
 
-                        if (this.mania_result < Exchange.mania_low_commission_limit) // 총 판매금액 2만원 미만시 수수료 고정수수료 1000원 + 출금수수료 1000원
+                        // 판매 금액 별로 다른 수수료 계산
+                        if (this.mania_result < Exchange.mania_low_commission_limit) // 판매금액 2만원 미만시
                         {
-                            this.mania_commission = Exchange.mania_low_commission + Exchange.mania_cash_out_commission;
+                            this.mania_commission = Exchange.mania_low_commission + Exchange.mania_cash_out_commission; // 고정수수료 1000원 + 출금수수료 1000원
                         }
-                        else if (this.mania_result > Exchange.mania_high_commission_limit) // 총 판매금액 94만원 이상시 고정수수료 47000원 + 출금수수료 1000원
+                        else if (this.mania_result > Exchange.mania_high_commission_limit) // 판매금액 94만원 초과시
                         {
-                            this.mania_commission = Exchange.mania_high_commission + Exchange.mania_cash_out_commission;
+                            this.mania_commission = Exchange.mania_high_commission + Exchange.mania_cash_out_commission; //고정수수료 47000원 + 출금수수료 1000원
                         }
                         else if (this.mania_result <= Exchange.mania_high_commission_limit &&
-                                 this.mania_result >= Exchange.mania_low_commission_limit) // 총 판매금액 2만원 이상시 수수료 5% + 출금수수료 1000원
-                        {
+                                 this.mania_result >= Exchange.mania_low_commission_limit) // 판매금액 2만원 이상 ~ 94만원 이하 시
+                        {   // 판매금액의 5% 수수료 + 출금수수료 1000원
                             this.mania_commission = (long)(money_total * this.mania_ratio * Exchange.mania_commission_percentage / 100) + Exchange.mania_cash_out_commission;
-                        }
-                        this.mania_result = this.mania_result - this.mania_commission;
+                        }   
+                        this.mania_result = this.mania_result - this.mania_commission;  // 수수료를 뺀 순수익 계산
                     }
                     else
                     {
                         MessageBox.Show("잘못된 값이 입력 되었습니다.");
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
                     MessageBox.Show("잘못된 값을 입력 했습니다.");
                 }
             }
         }
 
-        public class Sell
+        public class Sell   // 아이템 판매
         {
-            public long sell_price { get; set; }
-            public int cost_price { get; set; }
-            public int send_price { get; set; }
-            public int commission_level { get; set; }
-            public double commission_percentage { get; set; }
-            public int commission { get; set; }
-            public int total_get { get; set; }
+            public long sell_price { get; set; } // 판매 희망 가격
+            public int cost_price { get; set; } // 각종 소모 비용
+            public int send_price { get; set; } // 택배시스템 배송비
+            public int commission_level { get; set; } // 수수료 단계
+            public double commission_percentage { get; set; } // 수수료 퍼센트
+            public int commission { get; set; } // 수수료 금액
+            public int total_get { get; set; } // 순수익 금액
 
-            public static int normal_send_cost = 5000;
+            public static int normal_send_cost = 5000; // 인게임 택배 배송 비용
             public static int quick_send_cost = 20000;
 
-            
             public Sell()
             {
                 sell_price = 0;
@@ -118,7 +120,7 @@ namespace Money_Calculator
                 total_get = 0;
             }
 
-            public void commission_level_Setting(long sellprice)
+            public void commission_level_Setting(long sellprice) // 판매 희망 가격에 따른 수수료 레벨 설정
             {
                 if (sellprice < 100000) { this.commission_level = 0; }
                 else if (sellprice >= 100000 && sellprice < 1000000) { this.commission_level = 1; }
@@ -133,9 +135,7 @@ namespace Money_Calculator
                 this.sell_price = sellprice;
                 this.cost_price = costprice;
 
-                
-
-                switch (selltype) // 거래방식에 따라 다른 수수료 적용
+                switch (selltype) // 인게임 거래방식과 수수료 레벨에 따라 다른 수수료 % 설정
                 {
                     case 1: // 일반거래
                         {
@@ -166,60 +166,52 @@ namespace Money_Calculator
                         }
                     default : { break; }
                 }
-                this.commission = (int)(this.sell_price * this.commission_percentage/100);
-                this.total_get = (int)this.sell_price - this.commission - this.send_price - this.cost_price;
-
+                this.commission = (int)(this.sell_price * this.commission_percentage/100); // 수수료 계산
+                this.total_get = (int)this.sell_price - this.commission - this.send_price - this.cost_price; // 순수익 게임 머니 계산
             }
-
         }
-
-        public string mania_default = "4500";
-        public string bank_default = "4000";
 
         Exchange ex = new Exchange();
         Sell sell = new Sell();
 
-        private void main_form_Load(object sender, EventArgs e)
+        private void calc_button_Click(object sender, EventArgs e) // 계산 버튼을 누를경우
         {
-
-        }
-
-        private void calc_button_Click(object sender, EventArgs e)
-        {
-            if (main_tab.SelectedTab == main_tab_page1)
+            if (main_tab.SelectedTab == main_tab_page1) // 메소 판매 탭인경우
             {
-
-                if (string.IsNullOrEmpty(money_first_box.Text))
+                if (string.IsNullOrEmpty(money_first_box.Text)) // 사용자가 만단위만 계산하려고 억단위 숫자를 지운경우 0으로 강제 설정
                 { money_first_box.Text = "0"; }
-                if (string.IsNullOrEmpty(money_second_box.Text))
+                if (string.IsNullOrEmpty(money_second_box.Text)) // 사용자가 억단위만 계산하려고 만단위 숫자를 지운경우 0으로 강제 설정
                 { money_second_box.Text = "0"; }
 
-                if (int.TryParse(money_first_box.Text, out int int_mf) &&
-                    int.TryParse(money_second_box.Text, out int int_ms) &&
-                    int.TryParse(mania_box.Text, out int int_mr) &&
-                    int.TryParse(bank_box.Text, out int int_br))
+                if (int.TryParse(money_first_box.Text, out int int_moneyfirst) &&   // 금액 파싱
+                    int.TryParse(money_second_box.Text, out int int_moneysecond) &&
+                    int.TryParse(mania_box.Text, out int int_maniaratio) &&
+                    int.TryParse(bank_box.Text, out int int_bankratio))
                 {
-                    // 입력칸 예외 초기화 처리 (공백 or 음수)
-                    if (int.Parse(money_first_box.Text) < 0)
+                    if (int.Parse(money_first_box.Text) < 0) // 음수 처리
                     { money_first_box.Text = "0"; }
                     if (int.Parse(money_second_box.Text) < 0)
                     { money_second_box.Text = "100"; }
 
-                    if (int.Parse(money_first_box.Text) > 9999) // 9999억 초과시
+                    if (int.Parse(money_first_box.Text) > 9999) // 최대값 처리 및 종료
                     { money_first_box.Text = "9999"; MessageBox.Show("9999억을 초과할 수 없습니다."); return; }
-                    if (int.Parse(money_second_box.Text) > 9999) // 9999만 초과시
+                    if (int.Parse(money_second_box.Text) > 9999)
                     { money_second_box.Text = "9999"; MessageBox.Show("9999만을 초과할 수 없습니다."); return; }
-                    if (string.IsNullOrEmpty(mania_box.Text) || int.Parse(mania_box.Text) < 0)
+
+                    if (string.IsNullOrEmpty(mania_box.Text) || int.Parse(mania_box.Text) < 0) // 공백 or 음수 일경우 디폴트로 대체
                     { mania_box.Text = mania_default; }
                     if (string.IsNullOrEmpty(bank_box.Text) || int.Parse(bank_box.Text) < 0)
                     { bank_box.Text = bank_default; }
-                    if (int.Parse(money_first_box.Text) == 0 && int.Parse(money_second_box.Text) < 100)
-                    { money_second_box.Text = "100"; MessageBox.Show("최소 금액은 100만 이상이여야 합니다."); return; }
-                    // 최소 100만 이상 있어야하므로 99만 이하시 초기화
 
-                    ex.Calc(money_first_box.Text, money_second_box.Text, mania_box.Text, bank_box.Text);
+                    if (int.Parse(money_first_box.Text) == 0 && int.Parse(money_second_box.Text) < 100) // 최소값 처리 및 종료
+                    { money_second_box.Text = "100"; MessageBox.Show("최소 금액은 100만 이상이여야 합니다."); return; }
+
+                    ex.Calc(money_first_box.Text, money_second_box.Text, mania_box.Text, bank_box.Text); // 값을 전달하여 계산
+
                     mania_result.ForeColor = Color.Blue;
                     bank_result.ForeColor = Color.Red;
+
+                    // 결과 출력
                     if (ex.mania_result > ex.bank_result)
                     {
                         long gap = ex.mania_result - ex.bank_result;
@@ -247,7 +239,7 @@ namespace Money_Calculator
             }
             else if(main_tab.SelectedTab == main_tab_page2)
             {
-                if (string.IsNullOrEmpty(sell_price.Text)) { sell_price.Text = "0"; }
+                if (string.IsNullOrEmpty(sell_price.Text)) { sell_price.Text = "0"; } // 공백 처리
                 if (string.IsNullOrEmpty(cost_price.Text)) { cost_price.Text = "0"; }
                 
                 if (long.TryParse(sell_price.Text, out long sellprice) && 
@@ -257,9 +249,11 @@ namespace Money_Calculator
                     if (trade_radio.Checked) { selltype = 1; }
                     else if (send_radio.Checked) { selltype = 2; }
                     else if (quick_radio.Checked) { selltype = 3; }
-                    sell.Calc(sellprice, costprice, selltype);
-                    string result_string = sell.total_get.ToString("#,##0");
 
+                    sell.Calc(sellprice, costprice, selltype); // 계산
+
+                    // 출력
+                    string result_string = sell.total_get.ToString("#,##0");
                     commission_label.Text = sell.commission.ToString("#,##0") + " 메소";
                     total_cost_label.Text = (sell.cost_price + sell.send_price).ToString("#,##0") + " 메소";
                     total_get_label.Text = sell.total_get.ToString("#,##0") + " 메소";
@@ -340,19 +334,22 @@ namespace Money_Calculator
             }
         }
 
-        private void money_text_Change(object sender, EventArgs e)
+        private void money_text_Change(object sender, EventArgs e) // 판매 금액 입력값이 바뀔때마다 실행
         {
             if(long.TryParse(sell_price.Text, out long sellprice))
             {
-                if(sellprice > int.MaxValue)
+                if(sellprice > int.MaxValue) // 인게임에서는 int 최대값까지만 머니를 소지 가능하므로 초과시 처리
                 {
                     sellprice = int.MaxValue;
                     sell_price.Text = int.MaxValue.ToString();
                 }
-                sell.commission_level_Setting(sellprice);
-                int first = 0;
-                int second = 0;
-                int third = 0;
+
+                sell.commission_level_Setting(sellprice); // 입력한 판매 값에 따른 수수료 레벨 설정
+
+                int first = 0; // 억단위
+                int second = 0; // 만단위
+                int third = 0; // 1단위
+
                 for ( ; sellprice >= 100000000 ; )
                 {
                     first += 1;
@@ -364,13 +361,14 @@ namespace Money_Calculator
                     sellprice -= 10000;
                 }
                 third = (int)sellprice;
-                string text = "";
+
+                string text = ""; // 사용자가 입력한 숫자를 보기쉽도록 실시간 단위 표시
                 if(first > 0) { text = text + $"{first}억 "; }
                 if(second > 0){ text = text + $"{second}만 "; }
                 if(third > 0) { text = text + $"{third}메소";}
                 money_text_label.Text = text;
                 
-                commission_color_Change();
+                commission_color_Change(); // 입력 금액에 따른 실시간 수수료 색상 전환
             }
         }
 
@@ -393,8 +391,5 @@ namespace Money_Calculator
             else if (sell.commission_level == 6){commission_label_level10000.ForeColor = Color.Red;}
 
         }
-
-        
-        
     }
 }
